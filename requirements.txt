@@ -1,0 +1,7 @@
+Flask
+selenium
+matplotlib
+requests
+re
+io
+base64

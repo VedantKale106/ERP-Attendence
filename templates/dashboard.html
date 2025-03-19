@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Attendance</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-blue-50 min-h-screen font-sans">
+    <!-- Header with school theme -->
+    <header class="bg-blue-800 text-white p-4 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-graduation-cap text-2xl"></i>
+                <h1 class="text-xl md:text-2xl font-bold">Attendence Mitra Dashboard</h1>
+            </div>
+            <a href="{{ url_for('login') }}"
+                class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-lg transition duration-200 flex items-center">
+                <i class="fas fa-sign-out-alt mr-1"></i>
+                <span class="hidden sm:inline">Logout</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Main content -->
+    <main class="container mx-auto p-4">
+        <!-- Main attendance card -->
+        <div class="bg-white rounded-lg shadow-md p-4 mb-6">
+            <div class="flex flex-col items-start mb-4">
+                <div class="flex items-center">
+                    <i class="fas fa-chart-line text-blue-700 text-2xl mr-2"></i>
+                    <h1 class="text-xl font-bold text-gray-900">Welcome, {{ data.student_name }}!</h1>
+                </div>
+                <h2 class="text-lg font-semibold text-gray-800 mt-1">This is Your Attendance Summary</h2>
+            </div>
+            
+
+            <div class="mb-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between">
+                    <div class="mb-4 md:mb-0">
+                        <h3 class="text-lg font-semibold text-gray-700">Current Attendance</h3>
+                        <div
+                            class="text-3xl font-bold {% if data.current_percentage >= 75 %}text-green-600{% else %}text-red-600{% endif %}">
+                            {{ data.current_percentage|round(2) }}%
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-100 rounded-lg p-4 w-full md:w-auto">
+                        {% if data.current_percentage >= 75 %}
+                        <div class="flex items-center text-green-600">
+                            <i class="fas fa-check-circle text-2xl mr-2"></i>
+                            <p class="font-medium">You can skip the next <span class="font-bold">{{
+                                    data.lectures_to_bunk }}</span> lectures and still maintain 75% attendance!</p>
+                        </div>
+                        {% else %}
+                        <div class="flex items-center text-red-600">
+                            <i class="fas fa-exclamation-triangle text-2xl mr-2"></i>
+                            <p class="font-medium">You need to attend full college to reach 75% attendance!</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress bar -->
+            <div class="w-full bg-gray-200 rounded-full h-4 mb-2">
+                <div class="bg-blue-600 h-4 rounded-full" style="width: {{ data.current_percentage }}%"></div>
+            </div>
+            <p class="text-sm text-gray-500 mb-2">Target: 75%</p>
+        </div>
+
+        <!-- Low attendance subjects -->
+        <div class="bg-white rounded-lg shadow-md p-4 mb-6">
+            <div class="flex items-center mb-4">
+                <i class="fas fa-exclamation-circle text-red-500 text-2xl mr-2"></i>
+                <h2 class="text-xl font-bold text-gray-800">Subjects Needing Attention</h2>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white">
+                    <thead>
+                        <tr class="bg-red-100 text-red-800">
+                            <th class="py-2 px-4 text-left">Subject</th>
+                            <th class="py-2 px-4 text-center">Attendance</th>
+                            <th class="py-2 px-4 text-center">Percentage</th>
+                            <th class="py-2 px-4 text-center">Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for sub in data.low_attendance_subjects %}
+                        <tr class="border-b hover:bg-red-50 text-red-600">
+                            <td class="py-2 px-4 font-medium">{{ sub.Subject }}</td>
+                            <td class="py-2 px-4 text-center">{{ sub.Attendance }}</td>
+                            <td class="py-2 px-4 text-center font-semibold">{{ sub.Percentage }}%</td>
+                            <td class="py-2 px-4 text-center">{{ sub.Type }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-4 bg-red-50 border-l-4 border-red-500 p-4">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-bell text-red-500"></i>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm text-red-700">Please prioritize attending these subjects to improve your
+                            attendance!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Low Attendance Chart -->
+            {% if data.low_attendance_chart %}
+            <div class="mt-4">
+                <img src="{{ data.low_attendance_chart }}" alt="Low Attendance Chart" class="w-full rounded-lg shadow">
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- High attendance subjects -->
+        <div class="bg-white rounded-lg shadow-md p-4 mb-6">
+            <div class="flex items-center mb-4">
+                <i class="fas fa-medal text-green-500 text-2xl mr-2"></i>
+                <h2 class="text-xl font-bold text-gray-800">Strong Attendance Subjects</h2>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white">
+                    <thead>
+                        <tr class="bg-green-100 text-green-800">
+                            <th class="py-2 px-4 text-left">Subject</th>
+                            <th class="py-2 px-4 text-center">Attendance</th>
+                            <th class="py-2 px-4 text-center">Percentage</th>
+                            <th class="py-2 px-4 text-center">Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for sub in data.high_attendance_subjects|sort(attribute="Percentage", reverse=True) %}
+                        <tr class="border-b hover:bg-green-50 text-green-600">
+                            <td class="py-2 px-4 font-medium">{{ sub.Subject }}</td>
+                            <td class="py-2 px-4 text-center">{{ sub.Attendance }}</td>
+                            <td class="py-2 px-4 text-center font-semibold">{{ sub.Percentage }}%</td>
+                            <td class="py-2 px-4 text-center">{{ sub.Type }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-4 bg-green-50 border-l-4 border-green-500 p-4">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-check-circle text-green-500"></i>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm text-green-700">You can safely miss an occasional lecture in these subjects if
+                            needed!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- High Attendance Chart -->
+            {% if data.high_attendance_chart %}
+            <div class="mt-4">
+                <img src="{{ data.high_attendance_chart }}" alt="High Attendance Chart"
+                    class="w-full rounded-lg shadow">
+            </div>
+            {% endif %}
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-blue-800 text-white py-4 mt-6">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-sm">&copy; 2025 Attendence Mitra Dashboard. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

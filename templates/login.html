@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | AttendenceMitra</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .fact-slide {
+            animation: fadeIn 0.8s ease forwards;
+        }
+        
+        .float-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .school-pattern {
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%234a90e2' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-blue-50 to-blue-100 school-pattern px-4 py-10">
+    <!-- College Logo -->
+    <div class="mb-6 float-animation">
+        <div class="bg-blue-600 text-white p-4 rounded-full shadow-lg">
+            <i class="fas fa-graduation-cap text-3xl md:text-4xl"></i>
+        </div>
+    </div>
+    
+    <!-- Facts Carousel -->
+    <div class="w-full max-w-md mb-8 bg-white bg-opacity-80 rounded-lg shadow-lg p-4">
+        <h3 class="text-center text-blue-600 font-semibold mb-2">
+            <i class="fas fa-info-circle mr-2"></i>Did You Know?
+        </h3>
+        <div class="overflow-hidden relative h-16">
+            <div class="absolute w-full h-full flex items-center justify-center text-gray-700 text-sm md:text-base font-medium text-center px-4" id="carousel">
+                <!-- Facts will change dynamically here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Container -->
+    <div class="bg-white p-8 rounded-lg shadow-xl max-w-sm w-full relative border-t-4 border-blue-600">
+        <h2 class="text-2xl font-bold text-center text-blue-700 flex items-center justify-center">
+            <i class="fas fa-user-circle mr-2"></i>PCCOE Login
+        </h2>
+        <p class="text-center text-gray-500 text-sm mt-1">Attendence Mitra</p>
+
+        <form method="POST" class="mt-6" id="login-form">
+            <div class="mb-4">
+                <label class="block text-gray-600 mb-1">
+                    <i class="fas fa-user text-blue-500 mr-2"></i>Username:
+                </label>
+                <input type="text" name="username" required class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300">
+            </div>
+            
+            <div class="mb-6">
+                <label class="block text-gray-600 mb-1">
+                    <i class="fas fa-lock text-blue-500 mr-2"></i>Password:
+                </label>
+                <input type="password" name="password" required class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300">
+            </div>
+            
+            <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-md transition-all duration-300 shadow-md hover:shadow-lg flex items-center justify-center">
+                <i class="fas fa-sign-in-alt mr-2"></i>Login
+            </button>
+            
+            <div class="text-center mt-4">
+                <a href="#" class="text-blue-500 hover:text-blue-700 text-sm transition-colors duration-300">Forgot Password?</a>
+            </div>
+        </form>
+
+        <!-- Loader (Hidden Initially) -->
+        <div id="loader" class="hidden flex-col items-center justify-center mt-4">
+            <div class="animate-spin rounded-full h-10 w-10 border-t-4 border-blue-500"></div>
+            <p class="mt-2 text-gray-600">Logging in...</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="mt-6 text-center text-gray-500 text-xs">
+        <p>© 2025 AttendenceMitra. All rights reserved.</p>
+    </div>
+
+    <script>
+        // Show loader when form is submitted
+        document.getElementById('login-form').addEventListener('submit', function(event) {
+            document.getElementById('loader').classList.remove('hidden');
+            document.getElementById('loader').classList.add('flex');
+        });
+
+        // PCCOE Facts Carousel
+        const facts = [
+            "PCCOE is ranked among the top engineering colleges in Pune.",
+            "The campus has state-of-the-art research labs.",
+            "PCCOE hosts national-level hackathons and coding competitions.",
+            "It has 300+ company placements every year.",
+            "The college is known for its AI & ML research initiatives."
+        ];
+
+        let index = 0;
+        const carouselElement = document.getElementById("carousel");
+        
+        function updateCarousel() {
+            // Create new element for smooth transition
+            const newFact = document.createElement("div");
+            newFact.textContent = facts[index];
+            newFact.className = "fact-slide w-full";
+            
+            // Clear and add new fact
+            carouselElement.innerHTML = "";
+            carouselElement.appendChild(newFact);
+            
+            // Update index for next fact
+            index = (index + 1) % facts.length;
+        }
+
+        // Change facts every 5 seconds
+        setInterval(updateCarousel, 5000);
+        updateCarousel();
+        
+        // Add subtle entrance animations to page elements
+        document.addEventListener('DOMContentLoaded', function() {
+            const elements = document.querySelectorAll('.float-animation, form, .bg-white');
+            elements.forEach((el, index) => {
+                el.style.opacity = '0';
+                setTimeout(() => {
+                    el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+                    el.style.transform = 'translateY(10px)';
+                    setTimeout(() => {
+                        el.style.opacity = '1';
+                        el.style.transform = 'translateY(0)';
+                    }, 50);
+                }, index * 100);
+            });
+        });
+    </script>
+</body>
+</html>
