@@ -2,5 +2,4 @@ Flask
 selenium
 matplotlib
 requests
-io
-base64
+
